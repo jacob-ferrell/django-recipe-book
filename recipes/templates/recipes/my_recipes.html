@@ -1,0 +1,22 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div>
+    <a href="{% url 'create-recipe' %}">Create Recipe</a>
+    
+    <div>
+        {% for recipe in recipes %}
+            <div>
+                {% if request.user == recipe.author %}
+                <a href="{% url 'update-recipe' recipe.id %}">Update Recipe</a>
+                <a href="{% url 'delete-recipe' recipe.id %}">Delete Recipe</a>
+                {% endif %}
+                <h5>{{recipe.id}} -- <a href="{% url 'recipe' recipe.id %}">{{recipe.name}}</a></h5>
+                <hr>
+            </div>
+            {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

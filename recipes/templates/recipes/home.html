@@ -1,0 +1,32 @@
+
+{% extends 'main.html' %}
+
+
+
+{% block content %}
+
+
+<div class="home-container">
+    <div>
+        <h3>Browse Recipes</h3>
+        <hr>
+    </div>
+    
+    <div>
+        <a href="{% url 'create-recipe' %}">Create Recipe</a>
+        
+        <div class="thumbnail-container">
+            {% for recipe in recipes %}
+                <div class="recipe-thumbnail">
+                    {% comment %} <span>{{recipe.name}}</span>
+                    <img src="{{recipe.thumbnail_url}}"></img>
+                    <span>{{recipe.description}}</span> {% endcomment %}
+                    <span>{{recipe.recipe.label}}</span>
+                    <img src="{{recipe.recipe.image}}"></img>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

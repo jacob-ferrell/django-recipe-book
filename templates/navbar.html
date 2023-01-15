@@ -1,0 +1,30 @@
+<style>
+    .navbar-container{
+        display: flex;
+        justify-content: space-between;
+    }
+    .navbar-container div {
+        display: flex;
+        gap: 5vw;
+    }
+</style>
+
+<div class="navbar-container">
+    <a href="/">
+        <h1>Logo</h1>
+    </a>
+    <div>
+        
+        {% if request.user.is_authenticated %}
+        <a href="{% url 'logout' %}">
+            <h1>Log Out</h1>
+        </a>
+        {% else %}
+        <a href="{% url 'login' %}">
+            <h1>Log In</h1>
+        </a>
+        {% endif %}
+    </div>
+</div>
+
+<hr>
