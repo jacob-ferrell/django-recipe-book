@@ -33,17 +33,23 @@ def logoutUser(request):
 
 def registerUser(request):
     form = UserCreationForm()
-    context = {'form': form}
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
+            print(form)
             user = form.save(commit=False)
             user.username = user.username.lower()
+            user.first_name = request.POST.get('firstname')
+            user.last_name = request.POST.get('lastname')
             user.save()
             login(request, user)
             return redirect('home')
         else:
+            for field in form.errors:
+                for error in form.errors[field]:
+                    print(f'Error in {field}: {error}')
             messages.error(request, 'An error occured during registration')
-    return render(request, 'authentication/login_register.html', context)
+    return render(request, 'authentication/signup.html')
+
         
 

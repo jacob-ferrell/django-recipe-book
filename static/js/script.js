@@ -13,13 +13,13 @@ if (dropdownButton) {
 }
 
 const url = window.location.href;
-if (url.includes('my-recipes')) {
+/* if (url.includes('my-recipes')) {
     document.getElementById('my-recipes-link').classList.add('active')
 } else if (url.includes('my-favorites')) {
     document.getElementById('my-favorites-link').classList.add('active')
 } else {
     document.getElementById('home-link').classList.add('active')
-}
+} */
 
 function addToFavorites(e) {
     e.preventDefault()
