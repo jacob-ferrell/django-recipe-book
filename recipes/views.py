@@ -7,6 +7,13 @@ import requests
 import json
 import os
 
+def getCounts(user):
+        counts = {'my_recipes': 0, 'my_favorites': 0}
+        if user.is_authenticated:
+            counts['my_recipes'] = Recipe.objects.filter(author=user).count()
+            counts['my_favorites'] = Favorite.objects.filter(user=user).count()
+        return counts
+
 def home(request):
     def callTastyAPI():
         url = "https://tasty.p.rapidapi.com/recipes/list"
@@ -28,9 +35,9 @@ def home(request):
         query = request.GET.get('q')
 
         if query:
-            url = f"https://api.edamam.com/api/recipes/v2?type=public&q={query}&app_id={os.environ.get('EDAMAM_APP_ID')}&app_key={os.environ.get('EDAMAM_APP_KEY')}&imageSize=THUMBNAIL&random=true&field=uri&field=label&field=image&field=ingredients"
+            url = f"https://api.edamam.com/api/recipes/v2?type=public&q={query}&app_id={os.environ.get('EDAMAM_APP_ID')}&app_key={os.environ.get('EDAMAM_APP_KEY')}&imageSize=THUMBNAIL&random=true&field=uri&field=label&field=image&field=ingredients&field=shareAs"
         else:
-            url = f"https://api.edamam.com/api/recipes/v2?type=public&app_id={os.environ.get('EDAMAM_APP_ID')}&app_key={os.environ.get('EDAMAM_APP_KEY')}&imageSize=THUMBNAIL&random=true&field=uri&field=label&field=image&field=ingredients"
+            url = f"https://api.edamam.com/api/recipes/v2?type=public&app_id={os.environ.get('EDAMAM_APP_ID')}&app_key={os.environ.get('EDAMAM_APP_KEY')}&imageSize=THUMBNAIL&random=true&field=uri&field=label&field=image&field=ingredients&field=shareAs"
         response = requests.request("GET", url)
         data = response.json()
         recipes = data['hits']
@@ -46,7 +53,7 @@ def home(request):
         with open("/home/jacob/projects/django_recipe_book/static/mockEdamam.txt", 'r') as file:
             mock_data = json.load(file)
             return mock_data
-    context = {'recipes': getMockData(), 'type': 'discover'}
+    context = {'recipes': getMockData(), 'type': 'discover', 'counts': getCounts(request.user)}
 
     return render(request, 'recipes/home.html', context)
 
@@ -66,13 +73,13 @@ def recipe(request, pk):
 @login_required(login_url='login')
 def myRecipes(request):
     recipes = Recipe.objects.filter(author=request.user)
-    context = {'recipes': recipes, 'type': 'my-recipes'}
+    context = {'recipes': recipes, 'type': 'my-recipes', 'counts': getCounts(request.user)}
     return render(request, 'recipes/home.html', context)
 
 @login_required(login_url='login')
 def myFavorites(request):
     favorites = Favorite.objects.filter(user=request.user)
-    favorite_uris = []
+    """ favorite_uris = []
     for favorite in favorites:
         print(favorite.recipe)
         favorite_uris.append(favorite.recipe)
@@ -85,19 +92,19 @@ def myFavorites(request):
         print(data)
         print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
         recipe = data['recipe']
-        recipes.append(recipe)
-    context = {'recipes': recipes, 'type': 'my-favorites'}
+        recipes.append(recipe) """
+    context = {'recipes': favorites, 'type': 'my-favorites', 'counts': getCounts(request.user)}
     return render(request, 'recipes/home.html', context)
 
 @login_required(login_url='login')
 def add_to_favorites(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        print('POOOOOOPOOOOOPEEEEEPEEEE')
-        print(data)
         user = request.user
         recipe = data['recipe']
-        Favorite.objects.create(user=user, recipe=recipe)
+        label = data['label']
+        share = data['share']
+        Favorite.objects.create(user=user, recipe=recipe, label=label, share_link=share)
         return JsonResponse({'status': 'success'}, status=201)
     return JsonResponse({'status': 'error'}, status=400)
 
@@ -108,9 +115,9 @@ def createRecipe(request):
         form = RecipeForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('home')
-    context = {'form': form}
-    return render(request, 'recipes/recipe_form.html', context)
+            return redirect('my-recipes')
+    context = {'form': form, 'type': 'create-recipe', 'counts': getCounts(request.user)}
+    return render(request, 'recipes/home.html', context)
 
 @login_required(login_url='login')
 def updateRecipe(request, pk):

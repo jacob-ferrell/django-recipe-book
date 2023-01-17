@@ -39,6 +39,10 @@ class Favorite(models.Model):
 
     recipe = models.TextField(null=False)
 
+    label = models.TextField(null=False)
+
+    share_link = models.TextField(null=False)
+
     created_at = models.DateTimeField(auto_now_add=True)
     
     updated = models.DateTimeField(auto_now=True)

@@ -96,6 +96,18 @@ a {
     height: auto;
     fill: red;
 }
+#create-recipe-form label {
+  display: inline-block;
+  width: 120px;
+  text-align: right;
+  padding-right: 10px;
+}
+
+#create-recipe-form input {
+  display: inline-block;
+  width: 200px;
+}
+
 
 .favorite-heart path {
     fill: #ff0000;
