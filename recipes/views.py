@@ -1,12 +1,11 @@
 from django.shortcuts import render, redirect
-from .models import Recipe
+from .models import Recipe, Favorite
 from .forms import RecipeForm
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 import requests
 import json
 import os
-
 
 def home(request):
     def callTastyAPI():
@@ -23,33 +22,84 @@ def home(request):
         if response.status_code != 200:
             return render(request, HttpResponse('Failed to fetch data from the Tasty API'))
         data = response.json()
-        print(data)
         return  data['results']
 
     def callEdamamAPI():
-        query = 'chicken'
-        url = f"https://api.edamam.com/api/recipes/v2?type=public&q={query}&app_id={os.environ.get('EDAMAM_APP_ID')}&app_key={os.environ.get('EDAMAM_APP_KEY')}&imageSize=THUMBNAIL&random=true&field=label&field=image&field=ingredients"
+        query = request.GET.get('q')
+
+        if query:
+            url = f"https://api.edamam.com/api/recipes/v2?type=public&q={query}&app_id={os.environ.get('EDAMAM_APP_ID')}&app_key={os.environ.get('EDAMAM_APP_KEY')}&imageSize=THUMBNAIL&random=true&field=uri&field=label&field=image&field=ingredients"
+        else:
+            url = f"https://api.edamam.com/api/recipes/v2?type=public&app_id={os.environ.get('EDAMAM_APP_ID')}&app_key={os.environ.get('EDAMAM_APP_KEY')}&imageSize=THUMBNAIL&random=true&field=uri&field=label&field=image&field=ingredients"
         response = requests.request("GET", url)
         data = response.json()
-        print(data)
-        return data['hits']
+        recipes = data['hits']
+        for recipe in recipes:
+            str = recipe['recipe']['uri']
+            start = str.find("recipe")
+            recipe['recipe']['uri'] = str[start:]
+        with open("/home/jacob/projects/django_recipe_book/static/mockEdamam.txt", 'w') as outfile:
+            outfile.write(json.dumps(recipes))
+        return recipes
     
     def getMockData():
-        with open('/home/jacob/projects/django_recipe_book/static/recipeData.txt', 'r') as file:
+        with open("/home/jacob/projects/django_recipe_book/static/mockEdamam.txt", 'r') as file:
             mock_data = json.load(file)
-            return mock_data['results']
-
-    """ if not request.user.is_authenticated:
-        return redirect('login')
-    recipes = Recipe.objects.filter(author=request.user) """
-    context = {'recipes': callEdamamAPI()}
+            return mock_data
+    context = {'recipes': getMockData(), 'type': 'discover'}
 
     return render(request, 'recipes/home.html', context)
 
 def recipe(request, pk):
-    recipe = Recipe.objects.get(id=pk)
-    context = {'recipe': recipe}
+
+    if 'recipe' not in pk:
+        recipe = Recipe.objects.get(id=pk)
+    else:
+        url = f"https://api.edamam.com/api/recipes/v2/{pk}?type=public&app_id={os.environ.get('EDAMAM_APP_ID')}&app_key={os.environ.get('EDAMAM_APP_KEY')}"
+        response = requests.request("GET", url)
+        data = response.json()
+        recipe = data['recipe']
+        recipe_id = pk
+    context = {'recipe': recipe, 'recipe_id': recipe_id}
     return render(request, 'recipes/recipe.html', context)
+
+@login_required(login_url='login')
+def myRecipes(request):
+    recipes = Recipe.objects.filter(author=request.user)
+    context = {'recipes': recipes, 'type': 'my-recipes'}
+    return render(request, 'recipes/home.html', context)
+
+@login_required(login_url='login')
+def myFavorites(request):
+    favorites = Favorite.objects.filter(user=request.user)
+    favorite_uris = []
+    for favorite in favorites:
+        print(favorite.recipe)
+        favorite_uris.append(favorite.recipe)
+    print(favorite_uris)
+    recipes = []
+    for uri in favorite_uris:
+        url = f"https://api.edamam.com/api/recipes/v2/{uri}?type=public&app_id={os.environ.get('EDAMAM_APP_ID')}&app_key={os.environ.get('EDAMAM_APP_KEY')}"
+        response = requests.request("GET", url)
+        data = response.json()
+        print(data)
+        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+        recipe = data['recipe']
+        recipes.append(recipe)
+    context = {'recipes': recipes, 'type': 'my-favorites'}
+    return render(request, 'recipes/home.html', context)
+
+@login_required(login_url='login')
+def add_to_favorites(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        print('POOOOOOPOOOOOPEEEEEPEEEE')
+        print(data)
+        user = request.user
+        recipe = data['recipe']
+        Favorite.objects.create(user=user, recipe=recipe)
+        return JsonResponse({'status': 'success'}, status=201)
+    return JsonResponse({'status': 'error'}, status=400)
 
 @login_required(login_url='login')
 def createRecipe(request):

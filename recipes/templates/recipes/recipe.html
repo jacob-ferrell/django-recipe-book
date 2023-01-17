@@ -1,7 +1,18 @@
 {% extends 'main.html' %}
+{% load static %}
+
 
 {% block content %}
-
-<h1>{{recipe.name}}</h1>
+<form action="{% url 'add-to-favorites' recipe_id %}" method="POST">
+    {% csrf_token %}
+    <input class="favorite-heart" type="image" src="{% static 'images/heart.svg' %}" alt="Add To Favorites" data-user="{{request.user}}" data-recipe="{{recipe.recipe.uri}}">
+  </form>
+<h1>{{recipe.label}}</h1>
+<img src="{{recipe.images.LARGE.url}}" alt="">
+<div>
+{% for ingredient in recipe.ingredientLines %}
+    <p>{{ingredient}}</p>
+{% endfor %}
+</div>
 
 {% endblock content %}

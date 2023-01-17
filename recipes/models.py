@@ -33,3 +33,12 @@ class Ingredient(models.Model):
     
     def __str__(self):
         return self.name
+
+class Favorite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
+
+    recipe = models.TextField(null=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    updated = models.DateTimeField(auto_now=True)

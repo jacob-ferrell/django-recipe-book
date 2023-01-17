@@ -24,6 +24,10 @@
     grid-template-columns: 1fr 4fr;
 }
 
-.thumbnail-container span {
+
+.title-container {
+    display: flex;
+    justify-content: center;
     height: 2.25rem;
+
 }
