@@ -3,16 +3,44 @@
 
 
 {% block content %}
-  <form action="{% url 'add-to-favorites' recipe_id %}" method="POST">
+<main class="update-account layout">
+  <div class="container">
+      <div class="layout__box">
+          <div class="layout__boxHeader">
+              <div class="layout__boxTitle">
+                  <a class="go-back" onclick="window.history.back()">
+                      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                          viewBox="0 0 32 32">
+                          <title>arrow-left</title>
+                          <path
+                              d="M13.723 2.286l-13.723 13.714 13.719 13.714 1.616-1.611-10.96-10.96h27.625v-2.286h-27.625l10.965-10.965-1.616-1.607z">
+                          </path>
+                      </svg>
+                  </a>
+                  <h3>Recipe Details</h3>
+              </div>
+          </div>
+          <div class="layout__body">
+            <h1>{{recipe.label}}</h1>
+            <img src="{{recipe.images.LARGE.url}}" alt="Recipe Image">
+            <div>
+              <h1>INGREDIENTS</h1>
+              <ul>
+                {% for ingredient in recipe.ingredientLines %}
+                <li>{{ingredient}}</li>
+              {% endfor %}
+              </ul>
+              <a href="{{recipe.shareAs}}">View Preparation Instructions and Nutrional Info</a>
+            </div>
+          </div>
+      </div>
+  </div>
+</div>
+</main>
+{% comment %}   <form action="{% url 'add-to-favorites' recipe_id %}" method="POST">
     {% csrf_token %}
     <input class="favorite-heart" type="image" src="{% static 'images/heart.svg' %}" alt="Add To Favorites" data-user="{{request.user}}" data-recipe="{{recipe.recipe.uri}}">
-  </form>
-  <h1>{{recipe.label}}</h1>
-  <img src="{{recipe.images.LARGE.url}}" alt="">
-  <div>
-    {% for ingredient in recipe.ingredientLines %}
-      <p>{{ingredient}}</p>
-    {% endfor %}
-  </div>
+  </form> {% endcomment %}
+
 
 {% endblock content %}

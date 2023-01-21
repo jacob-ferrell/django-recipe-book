@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponseRedirect
 from .models import Recipe, Favorite
 from .forms import RecipeForm
 from django.contrib.auth.decorators import login_required
@@ -143,3 +143,5 @@ def deleteRecipe(request, pk):
         return redirect('home')
     return render(request, 'recipes/delete.html', {'obj': recipe})
 
+def goBack(request):
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

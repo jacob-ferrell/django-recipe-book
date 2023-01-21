@@ -125,7 +125,7 @@ object > svg path {
     display: flex;
     justify-content: center;
     height: 5rem;
-
+    text-align: center;
 }
 
 .btn {
@@ -494,6 +494,10 @@ object > svg path {
   overflow: hidden;
 }
 
+.go-back{
+  cursor: pointer;
+}
+
 .layout__boxHeader {
   display: flex;
   padding: 1.5rem;
@@ -520,6 +524,14 @@ object > svg path {
 
 .layout__body {
   margin: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.layout__body li {
+  text-align: left;
 }
 
 @media screen and (max-width: 900px) {
@@ -859,9 +871,9 @@ object > svg path {
 =>  Update Account
 ================================*/
 
-.update-account.layout .layout__box {
+/* .update-account.layout .layout__box {
   max-width: 68rem;
-}
+} */
 
 /*==============================
 =>  Delete Item
