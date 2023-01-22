@@ -91,10 +91,8 @@ a {
 
 }
 
-.favorite-heart {
-    width: 3rem;
-    height: auto;
-    fill: red;
+.recipe-thumbnail svg {
+  color: red;
 }
 #create-recipe-form label {
   display: inline-block;
@@ -109,17 +107,6 @@ a {
 }
 
 
-.favorite-heart path {
-    fill: #ff0000;
-}
-
-#logo path {
-    fill: red;
-}
-
-object > svg path {
-    fill: red;
-}
 
 .title-container {
     display: flex;

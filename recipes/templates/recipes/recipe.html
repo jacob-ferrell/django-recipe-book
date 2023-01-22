@@ -21,6 +21,7 @@
               </div>
           </div>
           <div class="layout__body">
+            {% if type != 'own' %}
             <h1>{{recipe.label}}</h1>
             <img src="{{recipe.images.LARGE.url}}" alt="Recipe Image">
             <div>
@@ -32,6 +33,20 @@
               </ul>
               <a href="{{recipe.shareAs}}">View Preparation Instructions and Nutrional Info</a>
             </div>
+            {% else %}
+            <h1>{{recipe.name}}</h1>
+            <p>{{recipe.description}}</p>
+            <ul>
+              {% for ingredient in recipe.ingredients %}
+                <li>{{ingredient.text}}</li>
+              {% endfor %}
+            </ul>
+            <ul>
+              {% for instruction in recipe.instructions %}
+                <li>{{instruction.text}}</li>
+              {% endfor %}
+            </ul>
+            {% endif %}
           </div>
       </div>
   </div>

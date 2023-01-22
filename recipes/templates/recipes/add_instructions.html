@@ -7,7 +7,7 @@
         <div class="layout__box">
             <div class="layout__boxHeader">
                 <div class="layout__boxTitle">
-                    <a class="go-back" onclick="window.history.back()">
+                    <a class="go-back" href="{% url 'home' %}">
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
                             viewBox="0 0 32 32">
                             <title>arrow-left</title>
@@ -16,35 +16,27 @@
                             </path>
                         </svg>
                     </a>
-                    <h3>Create a New Recipe</h3>
+                    <h3>Add Preparation Instructions</h3>
                 </div>
             </div>
             <div class="layout__body">
+                
                 <form class="form" action="" method="POST">
                     {% csrf_token %}
                     <div class="form__group">
-                        <label for="name">Recipe Name</label>
-                        <input id="name" name="name" type="text" placeholder="Name your recipe" required />
+                        <label for="instruction">Instruction</label>
+                        <input id="instruction" name="instruction" type="text" placeholder="ingredient, quantity, etc." required />
                     </div>
-
-                    <div class="form__group">
-                        <label for="description">Description</label>
-                        <input id="description" name="description" type="textarea" placeholder="Describe your recipe" required />
-                    </div>
-                    <input type="submit" value='submit'>
+                    <input type="submit" value='Add Instruction'>
                 </form>
+                <ul>
+                    {% for instruction in instructions %}
+                        <li>{{instruction.text}}</li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     </div>
   </div>
 </main>
-
-{% comment %}   <div>
-    <form action="" method="POST">
-      {% csrf_token %}
-      {{form.as_p}}
-      <input type="submit" value='submit'>
-    </form>
-  </div> {% endcomment %}
-
 {% endblock content %}

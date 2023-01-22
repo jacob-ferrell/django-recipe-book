@@ -21,18 +21,14 @@ class Ingredient(models.Model):
 
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
 
-    quantity = models.IntegerField(default=1)
-
-    unit = models.TextField(default='')
-
-    name = models.CharField(max_length=50)
+    text = models.TextField(null=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     
     updated = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return self.name
+        return self.text
 
 class Favorite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
@@ -42,6 +38,15 @@ class Favorite(models.Model):
     label = models.TextField(null=False)
 
     share_link = models.TextField(null=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    updated = models.DateTimeField(auto_now=True)
+
+class Instruction(models.Model):
+    text = models.TextField(null=False)
+
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
 
     created_at = models.DateTimeField(auto_now_add=True)
     

@@ -23,8 +23,9 @@ const url = window.location.href;
 
 function addToFavorites(e) {
     e.preventDefault()
+    console.log('poop')
+    console.log(e.target)
     const csrf_token = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-    console.log(e.target.dataset)
     fetch('/add-to-favorites/', {
         method: 'POST',
         headers: {
@@ -33,5 +34,5 @@ function addToFavorites(e) {
         },
         body: JSON.stringify({...e.target.dataset})
     })
-    .then(res => console.log(res))
 }
+
