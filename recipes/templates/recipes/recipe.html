@@ -21,6 +21,34 @@
               </div>
           </div>
           <div class="layout__body">
+            <form action="" method="POST">
+              {% csrf_token %}
+            {% if is_favorite %}
+            <a 
+              onclick="addToFavorites(event)"
+              data-user="{{request.user}}"
+              data-recipe="{{recipe_id}}"
+              data-label="{{recipe.label}}"
+              data-share="{{recipe.shareAs}}"
+              data-favorite="{{is_favorite}}"
+              id="add-to-favorites"
+            >
+              Remove From Favorites
+            </a>
+            {% else %}
+            <a 
+              onclick="addToFavorites(event)"
+              data-user="{{request.user}}"
+              data-recipe="{{recipe_id}}"
+              data-label="{{recipe.label}}"
+              data-share="{{recipe.shareAs}}"
+              data-favorite="{{is_favorite}}"
+              id="add-to-favorites"
+
+            >Add To Favorites
+            </a>
+            {% endif %}
+            </form>
             {% if type != 'own' %}
             <h1>{{recipe.label}}</h1>
             <img src="{{recipe.images.LARGE.url}}" alt="Recipe Image">

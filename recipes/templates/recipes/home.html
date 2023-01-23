@@ -70,38 +70,6 @@
               {% for recipe in recipes %}
                 <div class="recipe-thumbnail">
                   {% if type == 'discover' %}
-                    <form action="">
-                      {% csrf_token %}
-                      <svg 
-                        {% if recipe.recipe.uri in favorites %}
-                        style="width:24px;height:24px;color:black;"
-                        {% else %} 
-                        style="width:24px;height:24px"
-                        {% endif %}
-                        viewBox="0 0 24 24"
-                        
-                      >
-                        <path 
-                        data-user="{{request.user}}"
-                        data-recipe="{{recipe.recipe.uri}}"
-                        data-label="{{recipe.recipe.label}}"
-                        data-share="{{recipe.recipe.shareAs}}"
-                        onclick="addToFavorites(event)"
-                        fill="currentColor" 
-                        d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z" />
-                    </svg>
-                      {% comment %} <input
-                        class="favorite-heart"
-                        type="image"
-                        src="{% static 'images/heart.svg' %}"
-                        alt="Add To Favorites"
-                        data-user="{{request.user}}"
-                        data-recipe="{{recipe.recipe.uri}}"
-                        data-label="{{recipe.recipe.label}}"
-                        data-share="{{recipe.recipe.shareAs}}"
-                      > {% endcomment %}
-                    </form>
-                    {% comment %} <object class="favorite-heart" data="{% static 'images/heart.svg' %}" type="image/svg+xml"></object> {% endcomment %}
                     <div class="title-container">
                       <a
                         class="title"

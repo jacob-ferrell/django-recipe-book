@@ -1,5 +1,7 @@
-const addToFavoritesButtons = document.querySelectorAll('.favorite-heart');
-addToFavoritesButtons.forEach(button => button.addEventListener('click', addToFavorites))
+const addToFavoritesButtons = document.querySelectorAll(".favorite-heart");
+addToFavoritesButtons.forEach((button) =>
+  button.addEventListener("click", addToFavorites)
+);
 
 // Menu
 
@@ -21,18 +23,28 @@ const url = window.location.href;
     document.getElementById('home-link').classList.add('active')
 } */
 
-function addToFavorites(e) {
-    e.preventDefault()
-    console.log('poop')
-    console.log(e.target)
-    const csrf_token = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-    fetch('/add-to-favorites/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrf_token
-        },
-        body: JSON.stringify({...e.target.dataset})
-    })
-}
+async function addToFavorites(e) {
+  const addLink = document.getElementById("add-to-favorites");
 
+  e.preventDefault();
+  const csrf_token = document.querySelector(
+    'input[name="csrfmiddlewaretoken"]'
+  ).value;
+  const res = await fetch("/add-to-favorites/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrf_token,
+    },
+    body: JSON.stringify({ ...e.target.dataset }),
+  });
+  const json = await res.json();
+  console.log(json, e.target.dataset.favorite);
+  if (json.status !== 'success') return;
+  if (json.added) {
+    return addLink.textContent = "Remove From Favorites";
+  }
+    addLink.textContent = "Add To Favorites";
+
+  
+}

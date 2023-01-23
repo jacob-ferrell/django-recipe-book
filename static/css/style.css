@@ -83,6 +83,7 @@ a {
     background-color: var(--color-dark-medium);
     padding-left: 1rem;
     padding-right: 1rem;
+    padding-bottom: 1rem;
     border-radius: 5px;
     height: fit-content;
     display: flex;
@@ -106,7 +107,9 @@ a {
   width: 200px;
 }
 
-
+#add-to-favorites {
+  cursor: pointer;
+}
 
 .title-container {
     display: flex;

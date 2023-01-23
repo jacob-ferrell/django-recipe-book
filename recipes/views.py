@@ -67,7 +67,7 @@ def home(request):
     return render(request, 'recipes/home.html', context)
 
 def recipe(request, pk):
-
+    is_favorite = False
     if 'recipe' not in pk:
         recipe = Recipe.objects.get(id=pk)
         recipe_dict = {
@@ -84,8 +84,9 @@ def recipe(request, pk):
         data = response.json()
         recipe = data['recipe']
         type = ''
+        is_favorite = pk in getFavorites(request.user)
     recipe_id = pk
-    context = {'recipe': recipe, 'recipe_id': recipe_id, 'type': type}
+    context = {'recipe': recipe, 'recipe_id': recipe_id, 'type': type, 'is_favorite': is_favorite}
     return render(request, 'recipes/recipe.html', context)
 
 @login_required(login_url='login')
@@ -124,10 +125,12 @@ def add_to_favorites(request):
         recipe = data['recipe']
         label = data['label']
         share = data['share']
+        added = True
         favorite, created = Favorite.objects.get_or_create(user=user, recipe=recipe, label=label, share_link=share)
         if not created:
             favorite.delete()
-        return JsonResponse({'status': 'success'}, status=201)
+            added = False
+        return JsonResponse({'status': 'success', 'added': added}, status=201)
     return JsonResponse({'status': 'error'}, status=400)
 
 @login_required(login_url='login')
