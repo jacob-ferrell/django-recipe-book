@@ -1,6 +1,8 @@
-CookBook is a recipe book website allows users to create, share, and discover recipes.
+#CookBook
 
-Technologies Used
+CookBook is a recipe book website which allows users to create, share, and discover recipes.
+
+###Technologies Used
 
 -Django
 
@@ -8,13 +10,17 @@ Technologies Used
 
 -Javascript
 
-Resource Links
+###Resource Links
 
 -The site utilizes the Edamam Recipe API for discovering and searching for new recipes.  https://developer.edamam.com/edamam-recipe-api
 
 -CookBook's UI is derived from a template provided by Dennis Ivy, from this github repo: https://github.com/divanov11/StudyBud
 
-Features
+###Project Goals
+
+-The purpose of this project was to learn Django and explore its capabilities.  To force myself to learn Django's way of doing things, I purposely used as little Javascript as possible to create the site.  It is also for these reasons that I avoided using a front-end framework, such as React, which I am already accustomed to.
+
+###Features
 
 -The home page displays a list of random recipes from the Edamam Recipe API (If the search field is blank).
 
