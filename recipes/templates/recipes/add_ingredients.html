@@ -29,7 +29,6 @@
                     </div>
                     <input type="submit" value='Add Ingredient'>
                 </form>
-                <p>{{recipe_id}}</p>
                 <a href="{% url 'add-instruction' recipe_id %}">Add Instructions</a>
                 <ul>
                     {% for ingredient in ingredients %}
