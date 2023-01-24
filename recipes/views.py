@@ -73,6 +73,7 @@ def recipe(request, pk):
         recipe_dict = {
             'name': recipe.name,
             'description': recipe.description,
+            'author': recipe.author,
             'ingredients': Ingredient.objects.filter(recipe=recipe),
             'instructions': Instruction.objects.filter(recipe=recipe)
         }
@@ -100,20 +101,6 @@ def myRecipes(request):
 def myFavorites(request):
     user = request.user
     favorites = Favorite.objects.filter(user=request.user)
-    """ favorite_uris = []
-    for favorite in favorites:
-        print(favorite.recipe)
-        favorite_uris.append(favorite.recipe)
-    print(favorite_uris)
-    recipes = []
-    for uri in favorite_uris:
-        url = f"https://api.edamam.com/api/recipes/v2/{uri}?type=public&app_id={os.environ.get('EDAMAM_APP_ID')}&app_key={os.environ.get('EDAMAM_APP_KEY')}"
-        response = requests.request("GET", url)
-        data = response.json()
-        print(data)
-        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-        recipe = data['recipe']
-        recipes.append(recipe) """
     context = {'recipes': favorites, 'type': 'my-favorites', 'counts': getCounts(user), 'recent_recipes': getRecentRecipes(user), 'favorites': getFavorites(user)}
     return render(request, 'recipes/home.html', context)
 
@@ -187,8 +174,46 @@ def deleteRecipe(request, pk):
         return HttpResponse('You are attempting to delete a recipe you did not create!')
     if request.method == 'POST':
         recipe.delete()
-        return redirect('home')
+        return redirect('my-recipes')
     return render(request, 'recipes/delete.html', {'obj': recipe})
 
 def goBack(request):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@login_required(login_url='login')
+def editItem(request, delete=False):
+    data = json.loads(request.body)
+    print(data)
+    print(delete)
+    user = request.user
+    pk = int(data['pk'])
+
+    if data['type'] == 'ingredient': 
+        ingredient = Ingredient.objects.get(id=pk)
+        recipe = Recipe.objects.get(id=ingredient.recipe.id)
+        item = ingredient
+
+    else: 
+        instruction =  Instruction.objects.get(id=pk)
+        recipe = Recipe.objects.get(id=instruction.recipe.id)
+        item = instruction
+
+    if recipe.author != user:
+        return JsonResponse({'status': 'failed', 'message': 'Current user is not the creator of this recipe'}, status = 400)
+    
+    if request.method != 'POST':
+        return JsonResponse({'status': 'failed', 'message': 'Invalid request method'}, status = 400)
+    if not delete:
+        item.text = data['text']
+        item.save()
+    else:
+        item.delete()
+    return JsonResponse({'status': 'success' }, status = 201)
+
+@login_required(login_url='login')
+def deleteItem(request):
+    return editItem(request, True)
+
+
+
+

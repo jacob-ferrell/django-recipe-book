@@ -15,5 +15,7 @@ urlpatterns = [
     path('delete-recipe/<str:pk>/', views.deleteRecipe, name='delete-recipe'),
     path('go-back/', views.goBack, name='go-back'),
     path('add-ingredient/<str:pk>/', views.addIngredient, name='add-ingredient'),
+    path('edit-item/', views.editItem, name='edit-item'),
+    path('delete-item/', views.deleteItem, name='delete-item'),
     path('add-instruction/<str:pk>/', views.addInstruction, name='add-instruction'),
 ]

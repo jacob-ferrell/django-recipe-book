@@ -27,11 +27,12 @@
                         <label for="instruction">Instruction</label>
                         <input id="instruction" name="instruction" type="text" placeholder="ingredient, quantity, etc." required />
                     </div>
-                    <input type="submit" value='Add Instruction'>
+                    <button type='submit' class="btn btn--main">Add Instruction</button>
                 </form>
+                <a href="{% url 'my-recipes' %}">Finish Recipe</a>
                 <ul>
                     {% for instruction in instructions %}
-                        <li>{{instruction.text}}</li>
+                        <li>{{instruction.text}}<button data-id="{{instruction.id}}" data-prev="{{instruction.text}}" data-type="instruction" onclick="editItem(event)">Edit</button><button data-type="instruction" data-id="{{instruction.id}}" onclick="deleteItem(event)">Delete</button></li>
                     {% endfor %}
                 </ul>
             </div>

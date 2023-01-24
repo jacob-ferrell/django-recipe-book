@@ -8,7 +8,7 @@
       <div class="layout__box">
           <div class="layout__boxHeader">
               <div class="layout__boxTitle">
-                  <a class="go-back" onclick="window.history.back()">
+                  <a class="go-back" href="{{request.META.HTTP_REFERER}}">
                       <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
                           viewBox="0 0 32 32">
                           <title>arrow-left</title>
@@ -19,8 +19,12 @@
                   </a>
                   <h3>Recipe Details</h3>
               </div>
+              {% if request.user == recipe.author %}
+              <a href="{% url 'delete-recipe' recipe_id %}">Delete Recipe</a>
+              {% endif %}
           </div>
           <div class="layout__body">
+            {% if 'recipe' in recipe_id %}
             <form action="" method="POST">
               {% csrf_token %}
             {% if is_favorite %}
@@ -49,6 +53,7 @@
             </a>
             {% endif %}
             </form>
+            {% endif %}
             {% if type != 'own' %}
             <h1>{{recipe.label}}</h1>
             <img src="{{recipe.images.LARGE.url}}" alt="Recipe Image">
@@ -64,14 +69,29 @@
             {% else %}
             <h1>{{recipe.name}}</h1>
             <p>{{recipe.description}}</p>
+            <h1>INGREDIENTS</h1>
+            <form>
+              {% csrf_token %}
             <ul>
               {% for ingredient in recipe.ingredients %}
+                {% if request.user == recipe.author %}
+                <li>{{ingredient.text}}<button data-id="{{ingredient.id}}" data-prev="{{ingredient.text}}" data-type="ingredient" onclick="editItem(event)">Edit</button><button data-type="ingredient" data-id="{{ingredient.id}}" onclick="deleteItem(event)">Delete</button></li>
+                {% else %}
                 <li>{{ingredient.text}}</li>
+                {% endif %}
+
               {% endfor %}
             </ul>
+          </form>
+            <h1>INSTRUCTIONS</h1>
             <ul>
               {% for instruction in recipe.instructions %}
-                <li>{{instruction.text}}</li>
+                {% if request.user == recipe.author %}
+                  <li>{{instruction.text}}<button data-id="{{instruction.id}}" data-prev="{{instruction.text}}" data-type="instruction" onclick="editItem(event)">Edit</button><button data-type="instruction" data-id="{{instruction.id}}" onclick="deleteItem(event)">Delete</button></li>
+                {% else %}
+                  <li>{{instruction.text}}</li>
+                  {% endif %}
+
               {% endfor %}
             </ul>
             {% endif %}
@@ -80,10 +100,6 @@
   </div>
 </div>
 </main>
-{% comment %}   <form action="{% url 'add-to-favorites' recipe_id %}" method="POST">
-    {% csrf_token %}
-    <input class="favorite-heart" type="image" src="{% static 'images/heart.svg' %}" alt="Add To Favorites" data-user="{{request.user}}" data-recipe="{{recipe.recipe.uri}}">
-  </form> {% endcomment %}
 
 
 {% endblock content %}

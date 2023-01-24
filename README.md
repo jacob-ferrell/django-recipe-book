@@ -3,12 +3,15 @@
 CookBook is a recipe book website which allows users to create, share, and discover recipes.
 
 ### Technologies Used
+- HTML
 
-- Django
-
-- Sqlite3 Database
+- CSS
 
 - Javascript
+
+- Django Python
+
+- Sqlite3 Database
 
 ### Resource Links
 
