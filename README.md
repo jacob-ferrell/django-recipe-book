@@ -29,6 +29,8 @@ CookBook is a recipe book website which allows users to create, share, and disco
 
 - As mentioned previously, this site was a learning excercise for Django Python and was intentionally designed to use as little Javascript as possible.  For these reasons, doing things such as adding ingredients/instructions to a custom recipe might feel a bit unconventional.  A full-stack project which better showcases my front-end skills can be found at this github repo: https://github.com/jacob-ferrell/bug-tracker and is hosted here: https://bug-tracker-rcf6.onrender.com/
 
+- The Edamam Recipe API does not provide preparation instructions for its recipes, so the Recipe Details page will have a link user's can click to get this information, along with nutritional data.
+
 ### Features
 
 - The home page displays a list of random recipes from the Edamam Recipe API (If the search field is blank).
@@ -42,8 +44,6 @@ CookBook is a recipe book website which allows users to create, share, and disco
 - The user can view all recipes they have created by clicking the 'My Recipes' link in the sidebar
 
 - The user can view more information about a recipe from the Edamam API by clicking on the title.  From here, they can add or remove the recipe from 'My Favorites', allowing them to reference the recipe at a later time
-
-- The Edamam Recipe API does not provide preparation instructions for its recipes, so the Recipe Details page will have a link user's can click to get this information, along with nutritional data.
 
 - All favorited recipes can be viewed by clicking the 'My Favorites' link in the sidebar
 
