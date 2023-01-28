@@ -2,6 +2,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv()
 import os
+import urllib.parse as up
+import psycopg2
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -68,10 +70,16 @@ WSGI_APPLICATION = 'django_recipe_book.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+url = up.urlparse(os.environ.get("DATABASE_URL"))
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': url.username,
+        'USER': url.username,
+        'PASSWORD': url.password,
+        'HOST': url.hostname,
+        'POST': url.port
     }
 }
 
