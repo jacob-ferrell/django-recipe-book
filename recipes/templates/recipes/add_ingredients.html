@@ -32,7 +32,7 @@
                 <a href="{% url 'add-instruction' recipe_id %}">Continue To Instructions</a>
                 <ul>
                     {% for ingredient in ingredients %}
-                        <li>{{ingredient.text}}<button data-id="{{ingredient.id}}" data-prev="{{ingredient.text}}" data-type="ingredient" onclick="editItem(event)">Edit</button><button data-type="ingredient" data-id="{{ingredient.id}}" onclick="deleteItem(event)">Delete</button></li>
+                        <li>{{ingredient.text}}<div class='btn-container'><button data-id="{{ingredient.id}}" data-prev="{{ingredient.text}}" data-type="ingredient" onclick="editItem(event)">Edit</button><button data-type="ingredient" data-id="{{ingredient.id}}" onclick="deleteItem(event)">Delete</button></div></li>
 
                     {% endfor %}
                 </ul>

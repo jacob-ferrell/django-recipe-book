@@ -145,6 +145,18 @@ a {
   font-weight: 500;
 }
 
+.btn-container button {
+  background-color: rgba(255, 0, 0, 0);
+  border: none;
+  outline: none;
+  color: var(--color-main);
+  cursor: pointer;
+}
+.btn-container {
+  display: flex;
+  gap: .5rem;
+}
+
 .btn--link {
   border-radius: 0;
   padding: 0;
@@ -542,13 +554,17 @@ a {
 
 .layout__body li {
   text-align: left;
+  display: flex;
+  gap: .75rem;
   
 }
 .layout__body ul div {
   display: flex;
 }
 
-
+.layout__body .recipe-name {
+  font-size: 3rem;
+}
 @media screen and (max-width: 900px) {
   .activities,
   .topics {

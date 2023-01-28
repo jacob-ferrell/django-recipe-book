@@ -51,13 +51,14 @@ function editItem(e) {
   const type = e.target.dataset.type;
   const id = e.target.dataset.id;
   const prev = e.target.dataset.prev;
-  let parent = e.target.parentNode;
+  let parent = e.target.parentNode.parentNode;
   parent.innerHTML = "";
   const inputField = document.createElement("input");
   inputField.value = prev;
   parent.appendChild(inputField);
   const submit = document.createElement("button");
   submit.textContent = "Submit";
+  parent.classList.add('btn-container')
   parent.appendChild(submit);
 
   submit.addEventListener("click", async (e) => {
