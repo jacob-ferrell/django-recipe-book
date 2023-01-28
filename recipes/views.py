@@ -62,7 +62,7 @@ def home(request):
         with open("/home/jacob/projects/django_recipe_book/static/mockEdamam.txt", 'r') as file:
             mock_data = json.load(file)
             return mock_data
-    context = {'recipes': getMockData(), 'type': 'discover', 'counts': getCounts(user), 'recent_recipes': getRecentRecipes(user), 'favorites': getFavorites(user)}
+    context = {'recipes': callEdamamAPI(), 'type': 'discover', 'counts': getCounts(user), 'recent_recipes': getRecentRecipes(user), 'favorites': getFavorites(user)}
 
     return render(request, 'recipes/home.html', context)
 

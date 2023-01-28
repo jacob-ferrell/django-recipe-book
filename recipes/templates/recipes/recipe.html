@@ -75,7 +75,7 @@
             <ul>
               {% for ingredient in recipe.ingredients %}
                 {% if request.user == recipe.author %}
-                <li>{{ingredient.text}}<button data-id="{{ingredient.id}}" data-prev="{{ingredient.text}}" data-type="ingredient" onclick="editItem(event)">Edit</button><button data-type="ingredient" data-id="{{ingredient.id}}" onclick="deleteItem(event)">Delete</button></li>
+                <li>{{ingredient.text}}<a data-id="{{ingredient.id}}" data-prev="{{ingredient.text}}" data-type="ingredient" href="javascript:void(0)" onclick="editItem(event)">Edit</a><a data-type="ingredient" data-id="{{ingredient.id}}" href="javascript:void(0)" onclick="deleteItem(event)">Delete</a></li>
                 {% else %}
                 <li>{{ingredient.text}}</li>
                 {% endif %}
@@ -87,7 +87,7 @@
             <ul>
               {% for instruction in recipe.instructions %}
                 {% if request.user == recipe.author %}
-                  <li>{{instruction.text}}<button data-id="{{instruction.id}}" data-prev="{{instruction.text}}" data-type="instruction" onclick="editItem(event)">Edit</button><button data-type="instruction" data-id="{{instruction.id}}" onclick="deleteItem(event)">Delete</button></li>
+                  <li>{{instruction.text}}<a data-id="{{instruction.id}}" data-prev="{{instruction.text}}" data-type="instruction" href="javascript:void(0)" onclick="editItem(event)">Edit</a><a data-type="instruction" data-id="{{instruction.id}}" href="javascript:void(0)" onclick="deleteItem(event)">Delete</a></li>
                 {% else %}
                   <li>{{instruction.text}}</li>
                   {% endif %}

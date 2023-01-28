@@ -73,7 +73,7 @@ a {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Set the width of the columns to a minimum of 200px and a maximum of 1 fraction of the available space */
     grid-template-rows: auto; /* Set the height of the rows to 200px */
     grid-gap: 10px; /* Add some space between the images */
-    margin-bottom: 5rem;
+    margin-bottom: 3rem;
 }
 .thumbnail-image {
     width: 250px;
@@ -87,10 +87,22 @@ a {
     padding-bottom: 1rem;
     border-radius: 5px;
     height: fit-content;
+    max-width: 270px;
     display: flex;
     flex-direction: column;
     align-items: center;
 
+}
+
+.favorites-container {
+  background-color: var(--color-dark-medium);
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 1rem;
+  border-radius: 5px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .recipe-thumbnail svg {
@@ -435,6 +447,10 @@ a {
   fill: var(--color-main);
 }
 
+#logo path {
+  color: rgb(216, 216, 216);
+}
+
 /*==============================
 =>  Layout
 ================================*/
@@ -526,7 +542,12 @@ a {
 
 .layout__body li {
   text-align: left;
+  
 }
+.layout__body ul div {
+  display: flex;
+}
+
 
 @media screen and (max-width: 900px) {
   .activities,

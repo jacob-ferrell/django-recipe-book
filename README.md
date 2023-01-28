@@ -23,6 +23,12 @@ CookBook is a recipe book website which allows users to create, share, and disco
 
 - The purpose of this project was to learn Django and explore its capabilities.  To force myself to learn Django's way of doing things, I purposely used as little Javascript as possible to create the site.  It is also for these reasons that I avoided using a front-end framework, such as React, which I am already accustomed to.
 
+### Limitations
+
+- Due to using the free tier of the Edamam Recipe API, which limits user's to a maximum of 8 calls a minute, rapid reloads or searches might cause the API to stop responding.  It is also for this reason that the 'My Favorites' page does not render the thumbnail image of each recipe, as this would require an individual API call for each recipe and could instantly exceed the limit.  Image URL's provided by the Edamam API also eventually expire, so saving that URL is not an option.
+
+- As mentioned previously, this site was a learning excercise for Django Python and was intentionally designed to use as little Javascript as possible.  For these reasons, doing things such as adding ingredients/instructions to a custom recipe might feel a bit unconventional.  A full-stack project which better showcases my front-end skills can be found at this github repo: https://github.com/jacob-ferrell/bug-tracker and is hosted here: https://bug-tracker-rcf6.onrender.com/
+
 ### Features
 
 - The home page displays a list of random recipes from the Edamam Recipe API (If the search field is blank).
