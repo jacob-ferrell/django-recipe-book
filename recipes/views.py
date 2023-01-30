@@ -3,13 +3,18 @@ from .models import Recipe, Favorite, Ingredient, Instruction
 from .forms import RecipeForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
+from django.conf import settings
 import requests
 import json
 import os
+from django.core.files import File
+from PIL import Image
 
 def getRecentRecipes(user):
-    recipes = Recipe.objects.exclude(author=user).order_by('-created_at')[:5]
-    return recipes
+    print(user)
+    if not user.is_authenticated:
+        return Recipe.objects.all().order_by('-created_at')[:5]
+    return Recipe.objects.exclude(author=user).order_by('-created_at')[:5]
 
 def getCounts(user):
         counts = {'my_recipes': 0, 'my_favorites': 0}
@@ -19,6 +24,8 @@ def getCounts(user):
         return counts
 
 def getFavorites(user):
+    if not user.is_authenticated:
+        return []
     return Favorite.objects.filter(user=user).values_list('recipe', flat=True)
     
 
@@ -75,7 +82,8 @@ def recipe(request, pk):
             'description': recipe.description,
             'author': recipe.author,
             'ingredients': Ingredient.objects.filter(recipe=recipe),
-            'instructions': Instruction.objects.filter(recipe=recipe)
+            'instructions': Instruction.objects.filter(recipe=recipe),
+            'image': recipe.recipe_image.url
         }
         recipe = recipe_dict
         type = 'own'
@@ -84,6 +92,7 @@ def recipe(request, pk):
         response = requests.request("GET", url)
         data = response.json()
         recipe = data['recipe']
+        print(recipe)
         type = ''
         is_favorite = pk in getFavorites(request.user)
     recipe_id = pk
@@ -104,6 +113,14 @@ def myFavorites(request):
     context = {'recipes': favorites, 'type': 'my-favorites', 'counts': getCounts(user), 'recent_recipes': getRecentRecipes(user), 'favorites': getFavorites(user)}
     return render(request, 'recipes/home.html', context)
 
+def saveImage(url, id):
+    image_folder = os.path.join(settings.MEDIA_ROOT, 'images')
+    image = Image.open(url)
+    image_path = os.path.join(image_folder, f'{id}.jpg')
+    image.save(image_path)
+    return image_path
+    
+
 @login_required(login_url='login')
 def add_to_favorites(request):
     if request.method == 'POST':
@@ -112,6 +129,8 @@ def add_to_favorites(request):
         recipe = data['recipe']
         label = data['label']
         share = data['share']
+        """ image_url = data['image']
+        image_path = saveImage(image_url, recipe) """
         added = True
         favorite, created = Favorite.objects.get_or_create(user=user, recipe=recipe, label=label, share_link=share)
         if not created:
@@ -127,7 +146,8 @@ def createRecipe(request):
         name = data.get('name')
         description = data.get('description')
         if request.user.is_authenticated and name and description:
-            recipe = Recipe.objects.create(name=name, description=description, author=request.user)
+            image = request.FILES.get('image')
+            recipe = Recipe.objects.create(name=name, description=description, author=request.user, recipe_image=image)
             return redirect('add-ingredient', pk=recipe.id)
     context = {'type': 'create-recipe', 'counts': getCounts(request.user)}
     return render(request, 'recipes/create_recipe.html', context)

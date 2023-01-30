@@ -43,7 +43,13 @@
         </div>
         <div class="roomList__header">
           <div>
+            {% if type == 'my-favorites' %}
+            <h2>Favorite Recipes</h2>
+            {% elif type == 'my-recipes' %}
+            <h2>My Recipes</h2>
+            {% else %}
             <h2>Recipes</h2>
+            {% endif %}
           </div>
           {% if request.user.is_authenticated %}
             <a class="btn btn--main" href="{% url 'create-recipe' %}">
@@ -79,7 +85,11 @@
                     >{{recipe.name}}
                     </a>
                   </div>
-                  <img class="thumbnail-image" src="" alt="Recipe Image">
+                  {% if recipe.recipe_image %}
+                  <img class="thumbnail-image" src="{{recipe.recipe_image.url}}" alt="Recipe Image">
+                  {% else %}
+                  <div class="thumbnail-image">{{recipe.description}}</div>
+                  {% endif %}
                   {% comment %} {% elif type == 'my-favorites' %}
                     <div class="title-container"><a class="title" href="{% url 'recipe' recipe.recipe %}">{{recipe.label}}</a></div>
                     <img class="thumbnail-image" src="" alt="Favorite Recipe Image"> {% endcomment %}

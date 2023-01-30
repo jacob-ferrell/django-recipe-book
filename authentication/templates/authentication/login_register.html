@@ -12,9 +12,10 @@
           <div class="layout__body">
             <h2 class="auth__tagline">Start Creating Your Own Recipes!</h2>
 
-            <form class="form" action="#">
+            <form class="form" action="{% url 'login' %}" method="POST">
+              {% csrf_token %}
               <div class="form__group form__group">
-                <label for="room_name">Username</label>
+                <label for="username">Username</label>
                 <input id="username" name="username" type="text" />
               </div>
               <div class="form__group">

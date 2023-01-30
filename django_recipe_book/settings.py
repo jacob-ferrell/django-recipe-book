@@ -130,3 +130,7 @@ STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 CORS_ALLOW_ALL_ORIGINS = True
 STATICFILES_DIRS = [BASE_DIR / 'static']
+MEDIA_ROOT = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+

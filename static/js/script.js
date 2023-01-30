@@ -51,7 +51,7 @@ function editItem(e) {
   const type = e.target.dataset.type;
   const id = e.target.dataset.id;
   const prev = e.target.dataset.prev;
-  let parent = e.target.parentNode.parentNode;
+  let parent = e.target.parentNode;
   parent.innerHTML = "";
   const inputField = document.createElement("input");
   inputField.value = prev;
@@ -79,7 +79,8 @@ function editItem(e) {
     const json = await res.json();
     console.log(json.status)
     if (json.status !== "success") return;
-    parent.innerHTML = `<li>${inputField.value}<button data-id="${id}" data-prev="${inputField.value}" data-type="${type}" onclick="editItem(event)">Edit</button><button data-type="${type}" data-id="${id}" onclick="deleteItem(event)">Delete</button></li>`;
+    location.reload();
+    //parent.innerHTML = `<li>${inputField.value}<button data-id="${id}" data-prev="${inputField.value}" data-type="${type}" onclick="editItem(event)">Edit</button><button data-type="${type}" data-id="${id}" onclick="deleteItem(event)">Delete</button></li>`;
   });
 }
 

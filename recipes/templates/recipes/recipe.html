@@ -25,6 +25,7 @@
           </div>
           <div class="layout__body">
             {% if 'recipe' in recipe_id %}
+            {% if request.user.is_authenticated %}
             <form action="" method="POST">
               {% csrf_token %}
             {% if is_favorite %}
@@ -35,6 +36,7 @@
               data-label="{{recipe.label}}"
               data-share="{{recipe.shareAs}}"
               data-favorite="{{is_favorite}}"
+              data-image="{{recipe.images.LARGE.url}}"
               id="add-to-favorites"
             >
               Remove From Favorites
@@ -46,6 +48,7 @@
               data-recipe="{{recipe_id}}"
               data-label="{{recipe.label}}"
               data-share="{{recipe.shareAs}}"
+              data-image="{{recipe.images.LARGE.url}}"
               data-favorite="{{is_favorite}}"
               id="add-to-favorites"
 
@@ -54,9 +57,10 @@
             {% endif %}
             </form>
             {% endif %}
+            {% endif %}
             {% if type != 'own' %}
-            <h1 class='recipe-name'>{{recipe.label}}</h1>
-            <img src="{{recipe.images.LARGE.url}}" alt="Recipe Image">
+            <h1 class="recipe-name">{{recipe.label}}</h1>
+            <img src="{{recipe.images.REGULAR.url}}" alt="Recipe Image">
             <div>
               <h1>INGREDIENTS</h1>
               <ul>
@@ -67,7 +71,14 @@
               <a href="{{recipe.shareAs}}">View Preparation Instructions and Nutrional Info</a>
             </div>
             {% else %}
-            <h1>{{recipe.name}}</h1>
+            <h1 class="recipe-name">{{recipe.name}}</h1>
+            {% if recipe.image %}
+            <img src="{{recipe.image}}" alt="">
+            {% endif %}
+
+            {% if recipe.recipe_image %}
+            <p>{{recipe.recipe_image.url}}</p>
+            {% endif %}
             <p>{{recipe.description}}</p>
             <h1>INGREDIENTS</h1>
             <form>

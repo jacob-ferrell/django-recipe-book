@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="layout__body">
-                <form class="form" action="" method="POST">
+                <form class="form" action="" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form__group">
                         <label for="name">Recipe Name</label>
@@ -30,6 +30,11 @@
                     <div class="form__group">
                         <label for="description">Description</label>
                         <input id="description" name="description" type="textarea" placeholder="Describe your recipe" required />
+                    </div>
+
+                    <div class="form__group">
+                        <label for="image">Image(optional):</label>
+                        <input type="file" name="image" id="image" accept="image/*">
                     </div>
                     <button type='submit' class="btn btn--main">Add Ingredients</button>
                 </form>
