@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
+import os
 
 def loginPage(request):
     if request.user.is_authenticated:
@@ -16,6 +17,9 @@ def loginPage(request):
         except: 
             messages.error(request, 'User does not exist')
 
+        if username == 'guest': 
+            password = os.environ.get('GUEST_PASSWORD')
+
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
@@ -26,6 +30,16 @@ def loginPage(request):
 
     context = {'page': 'login'}
     return render(request, 'authentication/login_register.html', context)
+
+def loginGuest(request):
+    username = 'guest'
+    password = os.environ.get('GUEST_PASSWORD')
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        return redirect('home')
+    else:
+        messages.error(request, 'Username or password does not exist')
 
 def logoutUser(request):
     logout(request)
