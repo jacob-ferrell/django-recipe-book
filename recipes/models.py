@@ -13,7 +13,7 @@ class Recipe(models.Model):
 
     updated = models.DateTimeField(auto_now=True)
 
-    recipe_image = models.ImageField(null=True, blank=True, upload_to="images/")
+    recipe_image = models.ImageField(null=True, blank=True, upload_to="media/uploads/")
 
     def __str__(self):
         return self.name

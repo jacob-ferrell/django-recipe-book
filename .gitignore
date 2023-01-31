@@ -1,3 +1,4 @@
 *.env
 *.txt
 /staticfiles/
+/credential.json
