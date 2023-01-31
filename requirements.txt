@@ -6,3 +6,4 @@ psycopg2_binary==2.9.5
 python-dotenv==0.21.1
 requests==2.22.0
 google-cloud-storage
+gunicorn
