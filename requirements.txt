@@ -7,3 +7,4 @@ python-dotenv==0.21.1
 requests==2.22.0
 google-cloud-storage
 gunicorn
+django-storages
