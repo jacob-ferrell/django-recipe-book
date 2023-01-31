@@ -11,7 +11,6 @@ from django.core.files import File
 from PIL import Image
 
 def getRecentRecipes(user):
-    print(user)
     if not user.is_authenticated:
         return Recipe.objects.all().order_by('-created_at')[:5]
     return Recipe.objects.exclude(author=user).order_by('-created_at')[:5]
@@ -30,22 +29,9 @@ def getFavorites(user):
     
 
 def home(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
     user = request.user
-    def callTastyAPI():
-        url = "https://tasty.p.rapidapi.com/recipes/list"
-
-        querystring = {"from":"0","size":"5","tags":"under_30_minutes"}
-
-        headers = {
-            "X-RapidAPI-Key": os.environ.get('TASTY_API_KEY'),
-            "X-RapidAPI-Host": "tasty.p.rapidapi.com"
-        }
-
-        response = requests.request("GET", url, headers=headers, params=querystring)
-        if response.status_code != 200:
-            return render(request, HttpResponse('Failed to fetch data from the Tasty API'))
-        data = response.json()
-        return  data['results']
 
     def callEdamamAPI():
         query = request.GET.get('q')
@@ -129,8 +115,6 @@ def add_to_favorites(request):
         recipe = data['recipe']
         label = data['label']
         share = data['share']
-        """ image_url = data['image']
-        image_path = saveImage(image_url, recipe) """
         added = True
         favorite, created = Favorite.objects.get_or_create(user=user, recipe=recipe, label=label, share_link=share)
         if not created:
