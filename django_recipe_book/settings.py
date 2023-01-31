@@ -75,7 +75,7 @@ DATABASES = {
         'USER': url.username,
         'PASSWORD': url.password,
         'HOST': url.hostname,
-        'POST': url.port
+        'PORT': url.port
     }
 }
 
@@ -146,11 +146,3 @@ if not DEBUG:
     UPLOAD_ROOT = 'media/uploads/'
     MEDIA_URL = "https://storage.googleapis.com/{}/".format(GS_BUCKET_NAME)
 
-
-
-""" if not DEBUG:
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-    DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-    GS_BUCKET_NAME = os.environ.get('GS_BUCKET_NAME')
-    GS_PROJECT_ID = os.environ.get('GS_PROJECT_ID')
-    MEDIA_URL = "https://storage.googleapis.com/{}/".format(GS_BUCKET_NAME) """
