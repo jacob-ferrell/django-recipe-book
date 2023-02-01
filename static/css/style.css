@@ -75,6 +75,12 @@ a {
     grid-gap: 10px; /* Add some space between the images */
     margin-bottom: 3rem;
 }
+
+@media only screen and (max-width: 900px) {
+  .thumbnail-container {
+    align-items: center;
+  }
+}
 .thumbnail-image {
     width: 250px;
     height: 250px;
