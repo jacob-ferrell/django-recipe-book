@@ -134,8 +134,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 if not DEBUG:
     from google.oauth2 import service_account
     GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-        '/etc/secrets/credential.json'
+       '/etc/secrets/credential.json'
     )
+
+    """ GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    os.path.join(BASE_DIR, 'credential.json')
+    ) """
+    
     STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'    
     #STATIC_ROOT = BASE_DIR / 'staticfiles'
     DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
