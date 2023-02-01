@@ -3,7 +3,10 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
+from django.http import HttpResponseServerError
 import os
+import logging
+logger = logging.getLogger(__name__)
 
 def loginPage(request):
     if request.user.is_authenticated:
@@ -46,24 +49,28 @@ def logoutUser(request):
     return redirect('home')
 
 def registerUser(request):
-    form = UserCreationForm()
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            print(form)
-            user = form.save(commit=False)
-            user.username = user.username.lower()
-            user.first_name = request.POST.get('firstname')
-            user.last_name = request.POST.get('lastname')
-            user.save()
-            login(request, user)
-            return redirect('home')
-        else:
-            for field in form.errors:
-                for error in form.errors[field]:
-                    print(f'Error in {field}: {error}')
-            messages.error(request, 'An error occured during registration')
-    return render(request, 'authentication/signup.html')
+    try:
+        form = UserCreationForm()
+        if request.method == 'POST':
+            form = UserCreationForm(request.POST)
+            if form.is_valid():
+                print(form)
+                user = form.save(commit=False)
+                user.username = user.username.lower()
+                user.first_name = request.POST.get('firstname')
+                user.last_name = request.POST.get('lastname')
+                user.save()
+                login(request, user)
+                return redirect('home')
+            else:
+                for field in form.errors:
+                    for error in form.errors[field]:
+                        print(f'Error in {field}: {error}')
+                messages.error(request, 'An error occured during registration')
+        return render(request, 'authentication/signup.html')
+    except Exception as e:
+        logger.error(str(e))
+        return HttpResponseServerError("Something went wrong.")
 
         
 
