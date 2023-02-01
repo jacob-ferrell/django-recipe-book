@@ -27,6 +27,9 @@ def getFavorites(user):
         return []
     return Favorite.objects.filter(user=user).values_list('recipe', flat=True)
     
+def writeMockData(recipes):
+    with open("/home/jacob/projects/django_recipe_book/static/mockEdamam.txt", 'w') as outfile:
+            outfile.write(json.dumps(recipes))
 
 def home(request):
     if not request.user.is_authenticated:
@@ -47,8 +50,6 @@ def home(request):
             str = recipe['recipe']['uri']
             start = str.find("recipe")
             recipe['recipe']['uri'] = str[start:]
-        with open("/home/jacob/projects/django_recipe_book/static/mockEdamam.txt", 'w') as outfile:
-            outfile.write(json.dumps(recipes))
         return recipes
     
     def getMockData():
