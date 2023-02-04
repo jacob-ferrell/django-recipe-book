@@ -1,0 +1,24 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div class="recent-recipes-page">
+    <div class="activities__header"><h2>RECENT RECIPES</h2></div>
+
+    {% for recipe in recent_recipes %}
+
+        <div class="recent-recipe">
+                <div class="name-and-days-container">
+                    <span class="username">@{{recipe.author}}</span>
+                    <span>{{recipe.days_passed}} days ago</span>
+                </div>
+                <p>created recipe <br>
+                    <a href="{% url 'recipe' recipe.id %}">{{recipe.name}}</a>
+                    
+                </p>
+                <p>{{recipe.description}}</p>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}

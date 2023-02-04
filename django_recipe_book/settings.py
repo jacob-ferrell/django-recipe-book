@@ -11,7 +11,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.environ.get('DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
@@ -151,22 +151,25 @@ STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_DIRS = [BASE_DIR, 'static']
 
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-if not DEBUG:
-    from google.oauth2 import service_account
-    GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-       '/etc/secrets/credential.json'
-    )
 
-    """ GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-    os.path.join(BASE_DIR, 'credential.json')
-    ) """
+
+from google.oauth2 import service_account
+if DEBUG:
+    GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+        os.path.join(BASE_DIR, 'credential.json')
+    )
+else:
+    GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    '/etc/secrets/credential.json'
+)
     
+
     STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'    
     #STATIC_ROOT = BASE_DIR / 'staticfiles'
     DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'

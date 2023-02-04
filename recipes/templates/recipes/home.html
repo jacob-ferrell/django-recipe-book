@@ -37,7 +37,7 @@
             </label>
           </form>
           <div class="mobile-menuItems">
-            <a class="btn btn--main btn--pill" href="#">Recent User Recipes</a>
+            <a class="btn btn--main btn--pill" href="{% url 'recent-recipes' %}">Recent User Recipes</a>
           </div>
         </div>
         <div class="roomList__header">
@@ -121,7 +121,7 @@
               <a href="profile.html" class="roomListRoom__author">
                 <p>
                   @{{recipe.author}}
-                  <span>5 days ago</span>
+                  <span>{{recipe.days_passed}} days ago</span>
                 </p>
               </a>
               <div class="roomListRoom__actions">

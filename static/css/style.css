@@ -79,6 +79,7 @@ a {
 @media only screen and (max-width: 900px) {
   .thumbnail-container {
     align-items: center;
+    justify-items: center;
   }
 }
 .thumbnail-image {
@@ -591,6 +592,60 @@ a {
   .topics {
     display: none;
   }
+
+  .recent-recipes-page {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .recent-recipe {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem;
+    border: 2px solid var(--color-dark-medium);
+    border-radius: 5px;
+  }
+
+  .recent-recipe p {
+    text-align: center;
+  }
+
+  .activities__header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    margin-top: 3rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .username {
+    color: var(--color-main);
+    font-weight: 500;
+  }
+
+  .name-and-days-container {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    gap: 4rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .activities__header h2 {
+    width: 100%;
+    text-align: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+
+  
+
 
   .layout--3 > .container > div:nth-child(2) {
     flex-basis: 100%;

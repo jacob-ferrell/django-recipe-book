@@ -18,4 +18,5 @@ urlpatterns = [
     path('edit-item/', views.editItem, name='edit-item'),
     path('delete-item/', views.deleteItem, name='delete-item'),
     path('add-instruction/<str:pk>/', views.addInstruction, name='add-instruction'),
+    path('recent-recipes', views.recentRecipesPage, name='recent-recipes')
 ]

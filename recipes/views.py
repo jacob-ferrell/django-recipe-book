@@ -9,11 +9,25 @@ import json
 import os
 from django.core.files import File
 from PIL import Image
+import datetime
 
 def getRecentRecipes(user):
     if not user.is_authenticated:
-        return Recipe.objects.all().order_by('-created_at')[:5]
-    return Recipe.objects.exclude(author=user).order_by('-created_at')[:5]
+        recipes = Recipe.objects.all().order_by('-created_at')[:5]
+    else:
+        recipes = Recipe.objects.exclude(author=user).order_by('-created_at')[:5]
+    for recipe in recipes:
+        recipe.days_passed = getDaysPassed(recipe.created_at)
+    return recipes
+
+def getDaysPassed(created_at):
+    created = datetime.datetime.strptime(created_at.strftime("%Y-%m-%d %H:%M:%S"), "%Y-%m-%d %H:%M:%S")
+
+    today = datetime.datetime.now()
+
+    difference = today - created
+
+    return difference.days
 
 def getCounts(user):
         counts = {'my_recipes': 0, 'my_favorites': 0}
@@ -106,6 +120,11 @@ def saveImage(url, id):
     image_path = os.path.join(image_folder, f'{id}.jpg')
     image.save(image_path)
     return image_path
+
+def recentRecipesPage(request):
+    recent_recipes = getRecentRecipes(request.user)
+    context = {'recent_recipes': recent_recipes}
+    return render(request, 'recipes/recent_recipes.html', context)
     
 
 @login_required(login_url='login')
