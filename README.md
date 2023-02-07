@@ -11,7 +11,7 @@ CookBook is a recipe book website which allows users to create, share, and disco
 
 - Django Python
 
-- Sqlite3 Database
+- PostgreSQL Database
 
 ### Resource Links
 
